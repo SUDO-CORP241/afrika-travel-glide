@@ -89,10 +89,21 @@ const TripFormDialog: React.FC<TripFormDialogProps> = ({
 
   // Handle form submission
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    onSave({
-      id: trip?.id || "temp-id", // In a real app, the backend would generate an ID
-      ...data
-    });
+    // Ensure all required fields have values to satisfy the TripType interface
+    const completeTrip: TripType = {
+      id: trip?.id || `trip-${Date.now()}`, // Generate a unique ID if not editing
+      from: data.from,
+      to: data.to,
+      departureTime: data.departureTime,
+      arrivalTime: data.arrivalTime,
+      price: data.price,
+      company: data.company,
+      type: data.type,
+      duration: data.duration,
+      seatsLeft: data.seatsLeft
+    };
+    
+    onSave(completeTrip);
   };
 
   // Calculate duration based on departure and arrival times
