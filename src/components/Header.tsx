@@ -1,9 +1,13 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Shield } from 'lucide-react';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isAdmin?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isAdmin = false }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -21,7 +25,18 @@ const Header: React.FC = () => {
         
         <div className="text-xl font-bold text-travel-blue">Afrika Travel</div>
         
-        <div className="w-8"></div>
+        <div>
+          {isAdmin ? (
+            <div className="flex items-center text-travel-blue">
+              <Shield size={16} className="mr-1" />
+              <span className="text-sm">Admin</span>
+            </div>
+          ) : (
+            <Link to="/admin" className="text-sm text-gray-500 hover:text-travel-blue">
+              Admin
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
