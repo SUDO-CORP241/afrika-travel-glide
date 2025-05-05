@@ -13,7 +13,21 @@ interface LocationState {
   travelMode: 'bus' | 'train';
 }
 
-const mockBusTrips = [
+// Create a common trip type that works for both bus and train
+interface TripType {
+  id: string;
+  from: string;
+  to: string;
+  departureTime: string;
+  arrivalTime: string;
+  price: number;
+  company: string;
+  type: 'bus' | 'train';  // Allow both 'bus' and 'train'
+  duration: string;
+  seatsLeft: number;
+}
+
+const mockBusTrips: TripType[] = [
   {
     id: 'bus1',
     from: 'Accra',
@@ -22,7 +36,7 @@ const mockBusTrips = [
     arrivalTime: '13:30',
     price: 85000,
     company: 'STC Transport',
-    type: 'bus' as const,
+    type: 'bus',
     duration: '5h 30m',
     seatsLeft: 12
   },
@@ -34,7 +48,7 @@ const mockBusTrips = [
     arrivalTime: '16:15',
     price: 75000,
     company: 'VIP Transport',
-    type: 'bus' as const,
+    type: 'bus',
     duration: '5h 30m',
     seatsLeft: 4
   },
@@ -46,13 +60,13 @@ const mockBusTrips = [
     arrivalTime: '19:30',
     price: 90000,
     company: 'Metro Mass',
-    type: 'bus' as const,
+    type: 'bus',
     duration: '5h 30m',
     seatsLeft: 18
   }
 ];
 
-const mockTrainTrips = [
+const mockTrainTrips: TripType[] = [
   {
     id: 'train1',
     from: 'Accra',
@@ -61,7 +75,7 @@ const mockTrainTrips = [
     arrivalTime: '12:15',
     price: 120000,
     company: 'Ghana Railways',
-    type: 'train' as const,
+    type: 'train',
     duration: '4h 45m',
     seatsLeft: 32
   },
@@ -73,7 +87,7 @@ const mockTrainTrips = [
     arrivalTime: '17:45',
     price: 110000,
     company: 'Ghana Railways',
-    type: 'train' as const,
+    type: 'train',
     duration: '4h 45m',
     seatsLeft: 8
   }
@@ -83,7 +97,7 @@ const SearchResults = () => {
   const location = useLocation();
   const state = location.state as LocationState;
   const [activeTab, setActiveTab] = useState<'bus' | 'train'>(state?.travelMode || 'bus');
-  const [trips, setTrips] = useState<typeof mockBusTrips>([]);
+  const [trips, setTrips] = useState<TripType[]>([]);  // Updated type here
 
   useEffect(() => {
     // Simulate API call to fetch trips
